@@ -1,0 +1,70 @@
+{% extends 'users/register.html' %}
+    {% block title %}Log In | {% endblock%}
+
+    {% block content %}
+    <div class="container">
+        <form method="post" action=".">
+            {% csrf_token %}
+            {% if messages %}
+                {% for message in messages %}
+                    {% if message.tags %}
+                    <div class="alert alert-success mt-4" role="alert">
+                        <strong>{{ message }}</strong>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            <section class="mt-5">
+                <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+                    <div class="container h-100">
+                        <div class="row d-flex justify-content-center align-items-center h-100">
+                            <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                                <div class="card" style="border-radius: 15px;">
+                                    <div class="card-body p-5">
+                                        <h2 class="text-uppercase text-center mb-5">Log in</h2>
+        
+                                        <form method="post">
+                                            {% csrf_token %}
+                                            {{ form.username.label_tag }}
+                                            {{ form.username }}
+        
+                                            {{ form.password.label_tag }}
+                                            {{ form.password }}
+        
+                                            <!-- form errors  -->
+                                            {% if form.errors %}
+                                                {% for field in form %}
+                                                    {% for error in field.errors %}
+                                                        <div class="bg-danger rounded-2 mt-4 py-1" >
+                                                            <p class="ms-2 m-3" style="color:white;">{{ error|escape }}</p>
+                                                        </div>
+        
+                                                    {% endfor %}
+                                                {% endfor %}
+                                            
+                                                {% for error in form.non_field_errors %}  
+                                                    <div class="bg-danger rounded-2 mt-4 py-1" style="color:white;">
+                                                        <p class="ms-2 m-3" style="color:white;">{{ error|escape }}</p>
+                                                    </div>     
+                                                {% endfor %}
+                                            {% endif %}
+        
+                                            <div class="d-flex justify-content-center mt-4">
+                                                <button type="submit"
+                                                class="btn btn-primary btn-block btn-lg gradient-custom-4 text-body">Log in</button>
+                                            </div>
+        
+                                            <p class="text-center text-muted mt-5 mb-0">Don't have an account? <a href="{% url 'register' %}"
+                                                class="fw-bold text-body"><u>Create an account</u></a>
+                                            </p>
+        
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+    
+    {% endblock %}

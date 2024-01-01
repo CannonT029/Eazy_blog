@@ -1,0 +1,39 @@
+"""
+URL configuration for blog project.
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/4.2/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.contrib import admin
+from django.contrib.auth import views
+from django .conf import settings
+from django.conf.urls.static import static
+from django.urls import path, include
+from post.views import AddPost
+from pages.views import home, myblog
+from users.views import register
+from users.forms import LogInForm
+
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('post_form/', AddPost.as_view(), name='add_post'),
+    path('my_blog/', myblog, name='my_blog'),
+    path('post_form/', AddPost.as_view(), name='add_post'),
+    path('register/', register, name='register'),
+    path('logout/', views.LogoutView.as_view(), name="logout"),
+    path('login/', views.LoginView.as_view(template_name="users/login.html",  authentication_form=LogInForm), name='login'),
+    path('accounts/login/', views.LoginView.as_view(template_name="users/login.html", authentication_form=LogInForm), name='login'),
+    path('', home, name='home'),
+    path('', include('post.urls')),
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,53 @@
+{% extends 'pages/nav.html' %}
+
+{% block title %}Search | {% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Search results ...</h1>
+    <h3>Search for : "{{ query }}"</h3>
+</div>
+<div class="container mt-4">
+    <div class="row g-5 left-box">
+        <div class="container mt-4">
+            <div class="col-md-12 m-5">
+                <div class="row">
+                    <div class="col-lg-8">
+                        {% if posts %}
+                            {% for post in posts %}
+                                <div class="card m-5 p-5 single_post">
+                                    <div class="body">
+                                        {% if post.image %}
+                                            <figure class="image">
+                                                <img src="{{ post.image.url }}" width="50" height="50"/>
+                                            </figure>
+                                        {% endif %}
+                                        <a id="post_title" class="post_title" style="color:black; text-decoration: None;" href="{% url 'post_detail' category_slug=post.category.slug slug=post.slug %}">
+                                            <h1>{{ post.title }}</h1>
+                                        </a>
+                                        <small>@{{ post.author }}</small>
+                                        <h5>{{ post.created_at |date:"m-d-Y" }}</h5>
+                                    </div>
+                                    <div class="footer">
+                                        <div class="actions">
+                                            <a href="{% url 'post_detail' category_slug=post.category.slug slug=post.slug %}" class="btn btn-outline-primary mt-3">Continue Reading</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="container">
+                                <p>"{{ query }}" not found.</p>
+                            </div>
+                        {% endif%}
+                    </div>
+    
+                </div>
+            </div>
+        </div>
+    </div>    
+</div>
+
+{% endblock %}
+
+

@@ -1,0 +1,54 @@
+{% extends 'pages/nav.html' %}
+
+{% block title %} My Blog | {% endblock %}
+
+{% block content %}
+{% if username %}
+<div class="container my-3">
+    <h2><p>Welcome, {{ username }}!</p></h2>
+<!-- Display additional content for authenticated users -->
+<a class="btn btn-outline-primary" href="{% url 'add_post'%}">
+    Add Post
+</a>
+
+<div class="container my-3">
+    <h1 >Post History</h1>
+</div>
+    
+    {% if posts %}
+            
+        {% for post in posts %}
+        <div class="row g-5 left-box">
+            <div class="container mt-4">
+                <div class="col-md-8">
+                    {% for post in posts %}
+                        <div class="card m-5 p-5 single_post">
+                            <div class="body">
+                                {% if post.image %}
+                                    <figure class="image">
+                                        <img src="{{ post.image.url }}" width="50" height="50"/>
+                                    </figure>
+                                {% endif %}
+                                <a id="post_title" class="post_title" style="color:black; text-decoration: None;" href="{% url 'post_detail' post.category.slug post.slug %}">
+                                    <h1>{{ post.title }}</h1>
+                                </a>
+                                <small>@{{ post.author }}</small>
+                                <h5>{{ post.updated_at |date:"m-d-Y" }}</h5>
+                            </div>
+                            <div class="container mt-3">
+                                <a class="btn btn-success" href="{% url 'edit_post' slug=post.slug %}">Edit</a>
+                                <a class="btn btn-danger" href="{% url 'delete_post' slug=post.slug %}">Delete</a>
+                            </div>
+                        </div>   
+                    {% endfor %}
+                </div>
+            
+        {% endfor %}
+
+    {% else %}
+        <p>You don't have any post yet.</p>
+    {% endif %}
+    </div>
+{% endif%}
+{% endblock %}
+

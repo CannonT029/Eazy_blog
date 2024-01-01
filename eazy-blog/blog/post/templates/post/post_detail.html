@@ -1,0 +1,87 @@
+{% extends 'pages/nav.html' %}
+
+{% block title %}{{ post.title }} | {% endblock %}
+
+{% block content %}
+<div class="container">
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+            <div class="alert alert-success mt-4" role="alert">
+                <strong>{{ message }}</strong>
+            </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    {% if post.image %}
+        <figure class="image pt-4" style="width: 50px; height:50;">
+            <img src="{{ post.image.url }}"/>
+        </figure>
+    {% endif %}        
+    <h1>{{ post.title }}</h1>
+    {% if post.updated_at %}
+        Last updated: {{ post.updated_at | date:'m-d-Y' }}
+    {% else %}
+        Created: {{ post.created_at | date:'m-d-Y' }}
+    {% endif %}
+    <br>
+    <small>@{{ post.author }}</small>
+    <p>{{ post.body }}</p>    
+    <p><small>Category: <a href="{% url 'category_detail' post.category.slug %}">{{ post.category }}</a></small></p>
+
+    <hr>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="col-lg-4">
+            <div class="card">
+                <h3><p class="pt-3 ps-4">Write a comment</p></h3>
+                <div class="container d-flex">
+                    <div class="container">
+                        <div class="form-group mt-1">
+                            
+                            <label for="{{ form.name.id_for_label }}"></label>
+                            {{ form.name }}
+                        </div>
+          
+                        <div class="form-group mt-1">
+                            <label for="{{ form.body.id_for_label }}"></label>
+                            {{ form.body }}
+                        </div>
+                        <button type="submit" name="main_comment" class="btn btn-success my-3">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>  
+        <section class="card col-7 p-5 m-4">
+            <div class="card-header">
+                <h3><p>Comments</p></h3>
+            </div>
+            <hr>
+            {% if post.comments.all %}
+                {% for comment in post.comments.all %}
+                    <div class="row mt-5">
+                        <div class="">
+                            <div class="card">
+                                <div class="comment-container p-3">
+                                    <div class="header">
+                                        <strong class="ps-2">
+                                            {{ comment.name }}
+                                        </strong>
+                                        <small class="float-lg-end"><p>{{ comment.created_at | timesince}} ago</p></small>
+                                    </div>
+                                    <hr>
+                                    <p class="ps-2">
+                                        {{ comment.body }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Be the first to comment.</p>
+            {% endif %}
+      </section>
+</div>
+{% endblock %}

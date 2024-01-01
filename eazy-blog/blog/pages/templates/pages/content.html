@@ -1,0 +1,53 @@
+{% extends 'pages/nav.html' %}
+
+{% block title %}Home | {% endblock %}
+
+{% block content %}
+<div class="row g-5 left-box">
+    <div class="container mt-4">
+        <div class="col-md-12 m-5">
+            <div class="row">
+                <div class="col-lg-8">
+                    {% for post in posts %}
+                        <div class="card m-5 p-5 single_post">
+                            <div class="body">
+                                {% if post.image %}
+                                    <figure class="image">
+                                        <img src="{{ post.image.url }}" width="50" height="50"/>
+                                    </figure>
+                                {% endif %}
+                                <a id="post_title" class="post_title" style="color:black; text-decoration: None;" href="{% url 'post_detail' category_slug=post.category.slug slug=post.slug %}">
+                                    <h1>{{ post.title }}</h1>
+                                </a>
+                                <small>@{{ post.author }}</small>
+                                <h5>{{ post.created_at |date:"m-d-Y" }}</h5>
+                            </div>
+                            <div class="footer">
+                                <div class="actions">
+                                    <a href="{% url 'post_detail' category_slug=post.category.slug slug=post.slug %}" class="btn btn-outline-primary mt-3">Continue Reading</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="col-lg-3 mt-5">
+                    <div class="card">
+                        <div class="header">
+                            <h2 class="fst-italic p-3">About</h2>
+                        </div>
+                        <div class="p-3 border bg-light">
+                            <div class="p-4 mb-3 bg-light rounded">
+                                <p class="mb-0">This website is created using django.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+

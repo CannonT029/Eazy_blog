@@ -1,0 +1,32 @@
+{% extends 'pages/nav.html' %}
+
+{% block title %} Delete Confirmation | {% endblock %}
+
+{% block content %}
+<div class="container h-100">
+  <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+          <div class="card m-5" style="border-radius: 15px;">
+              <div class="card-body p-5">
+                  <form method="POST" action="{% url 'delete_post' slug=post.slug %}">
+                      {% csrf_token %}
+                      <h2>Delete Confirmation</h2>
+                      <p>Are you sure you want to delete the post "{{ post.title }}"</p>
+                      
+                      {% csrf_token %}
+                      <div class="row ">
+                        <div class="container m-3">
+                          <button type="submit" class="btn btn-danger mt-5">Delete</button>
+                        </div>
+                        <div class="container m-3">
+                            <a class="btn btn-secondary" href="{% url 'post_detail' post.category.slug post.slug %}">Cancel</a>
+                        </div>
+                      </div>
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+{% endblock %}
+
